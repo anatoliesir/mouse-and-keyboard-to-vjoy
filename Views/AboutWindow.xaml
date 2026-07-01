@@ -71,7 +71,7 @@
                     <StackPanel>
                         <TextBlock Text="• Boosted performance in simracing is not guaranteed. Better results depend on proper configuration and knowing how to use the assists and controls." 
                                    TextWrapping="Wrap" Margin="0,0,0,8" FontStyle="Italic" FontSize="12"/>
-                        <TextBlock Text="• This application was manually designed and developed by Sîrbu Răzvan. AI was used to assist with the development of complex mathematical formulas and algorithms. The forked vJoy driver that was used here was made by njz3 from GitHub." 
+                        <TextBlock Text="• This application was manually designed and developed by Sîrbu Răzvan. AI was used to assist with the development of complex mathematical formulas and algorithms. The forked vJoy driver that was used here was made by BrunnerInnovation from GitHub." 
                                    TextWrapping="Wrap" FontStyle="Italic" FontSize="12"/>
                     </StackPanel>
                 </Border>
