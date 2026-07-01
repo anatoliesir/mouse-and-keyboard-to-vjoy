@@ -86,13 +86,11 @@ namespace MouseToVJoy.ViewModels
         private DateTime _lastIdleTickUtc = DateTime.UtcNow;
         private double _keyboardThrottleRawRatio;
         private double _keyboardBrakeRawRatio;
-        // Setările NOI pentru auto-resetarea frânei
         private bool _enableBrakeResetting;
         private double _brakeReturnTimeSeconds = 5.0;
-        // Memorie pentru a ști dacă frâna e în mișcare
         private double _lastRawBrakeValue = 0.0;
         private double _brakeIdleTimer = 0.0;
-        private const double BrakeIdleDelaySeconds = 0.1; // Așteaptă 100ms după ce te oprești, înainte să retragă frâna
+        private const double BrakeIdleDelaySeconds = 0.1; 
 
         private bool _enableKeyboardThrottleCurve;
         private string _keyboardThrottleCurvePoints = PresetSettings.DefaultResponseCurvePoints;
@@ -107,13 +105,11 @@ namespace MouseToVJoy.ViewModels
         private double _keyboardThrottleAssistIdleThreshold = 1.0;
         private double _keyboardThrottleAssistDuration = 2.0;
 
-        // State logic pentru Throttle Assist
         private double _throttleIdleTimer = 0.0;
         private double _throttleAssistActiveTimer = 0.0;
         private bool _wasThrottlePressed = false;
         private double _activeThrottleReduction = 0.0;
 
-        // ---- Proprietățile publice asociate (generează-le pentru binding în XAML) ----
         public bool EnableKeyboardThrottleCurve 
         { get => _enableKeyboardThrottleCurve; set => SetSetting(ref _enableKeyboardThrottleCurve, value); }
         public string KeyboardThrottleCurvePoints 
@@ -840,7 +836,6 @@ namespace MouseToVJoy.ViewModels
             if (isoBrake && mouseThrottleEnabled) SetThrottleValue(AxisMin);
         }
 
-        // EDITAT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         private double ApplyMousePedalDeadZone(double combinedPedalValue)
         {
             double maxMagnitude = AxisMax - AxisMin;
@@ -850,11 +845,8 @@ namespace MouseToVJoy.ViewModels
 
             double magnitude = Math.Abs(combinedPedalValue);
 
-            // Dacă suntem în interiorul zonei moarte, ignorăm complet mișcarea
             if (magnitude <= deadZone) return 0.0;
 
-            // REPARARE BUG CODEX: Scădem zona moartă, dar rescalăm valoarea 
-            // pe baza spațiului rămas disponibil (maxMagnitude - deadZone)
             double activeRange = maxMagnitude - deadZone;
             double outputMagnitude = ((magnitude - deadZone) / activeRange) * maxMagnitude;
 
@@ -1043,27 +1035,17 @@ namespace MouseToVJoy.ViewModels
 
 
 
-            // --- Resetarea Frânei (REPARATĂ) ---
             bool isolateBrake = IsKeyDown(VK_3) || IsKeyDown(VK_NUMPAD3);
 
-            // 1. Verificăm direcția de mișcare a frânei
             if (_mousePedalRawCombinedValue > _lastRawBrakeValue)
             {
-                // Valoarea crește -> Utilizatorul apasă frâna activ. 
-                // Resetăm timer-ul de repaus.
                 _brakeIdleTimer = 0.0;
             }
             else
             {
-                // Valoarea stagnează sau scade -> Utilizatorul a eliberat sau nu mai adaugă presiune.
-                // Începem să numărăm timpul.
                 _brakeIdleTimer += elapsedSeconds;
             }
-
-            // 2. Salvăm valoarea curentă pentru a o putea compara în frame-ul următor
             _lastRawBrakeValue = _mousePedalRawCombinedValue;
-
-            // 3. Aplicăm auto-resetarea DOAR dacă frâna e activă ȘI a trecut timpul de repaus
             if (!isolateBrake && EnableBrakeResetting && _mousePedalRawCombinedValue > 0)
             {
                 if (_brakeIdleTimer >= BrakeIdleDelaySeconds)
@@ -1072,9 +1054,6 @@ namespace MouseToVJoy.ViewModels
                     double step = (maxTravel / BrakeReturnTimeSeconds) * elapsedSeconds;
 
                     _mousePedalRawCombinedValue = Math.Max(0.0, _mousePedalRawCombinedValue - step);
-
-                    // FOARTE IMPORTANT: Actualizăm din nou _lastRawBrakeValue 
-                    // altfel, scăderea automată ar fi interpretată în frame-ul următor ca "stagnare" incorectă
                     _lastRawBrakeValue = _mousePedalRawCombinedValue;
 
                     double outputCombinedY = ApplyMousePedalDeadZone(_mousePedalRawCombinedValue);
@@ -1087,22 +1066,18 @@ namespace MouseToVJoy.ViewModels
 
         private void UpdateKeyboardPedals(double elapsedSeconds)
         {
-            // Calculăm cât de mult se virează în acest moment (0.0 = centru, 1.0 = lock maxim)
             double steeringFactor = Math.Abs(_virtualWheelValue - AxisCenter) / (double)AxisHalfRange;
 
             // --- THROTTLE ---
             if (EnableThrottle && EnableKeyboardThrottle)
             {
                 bool pressed = IsKeyDown(GetVirtualKey(KeyboardThrottleKey));
-
-                // 1. Logica de declanșare (Trigger) pentru Throttle Assist
                 if (!pressed)
                 {
                     _throttleIdleTimer += elapsedSeconds;
                 }
                 else
                 {
-                    // Dacă am stat suficient timp în idle și acum apăsăm, activăm asistența
                     if (!_wasThrottlePressed && _throttleIdleTimer >= KeyboardThrottleAssistIdleThreshold)
                     {
                         _throttleAssistActiveTimer = KeyboardThrottleAssistDuration;
@@ -1111,19 +1086,16 @@ namespace MouseToVJoy.ViewModels
                 }
                 _wasThrottlePressed = pressed;
 
-                // 2. Procesăm input-ul tastaturii și lag-ul
                 double target = pressed ? 1.0 : 0.0;
                 double lagSeconds = pressed ? KeyboardThrottleLagUpSeconds : KeyboardThrottleLagDownSeconds;
                 _keyboardThrottleRawRatio = MoveRatioToward(_keyboardThrottleRawRatio, target, lagSeconds, elapsedSeconds);
 
                 double outputRatio = EnableKeyboardThrottleCurve ? ApplyResponseCurve(_keyboardThrottleRawRatio, KeyboardThrottleCurvePoints) : _keyboardThrottleRawRatio;
 
-                // 3. Calculăm reducerea (Steering Assist)
                 double targetReduction = 0.0;
                 if (EnableKeyboardThrottleSteeringAssist && _throttleAssistActiveTimer > 0)
                 {
                     _throttleAssistActiveTimer -= elapsedSeconds;
-                    // Steering factor se bazează pe poziția volanului
                     targetReduction = steeringFactor * KeyboardThrottleSteeringAssistStrength;
                 }
                 else
@@ -1131,11 +1103,9 @@ namespace MouseToVJoy.ViewModels
                     _throttleAssistActiveTimer = 0.0;
                 }
 
-                // Netezim reducerea pentru a evita șocuri la activare/dezactivare
                 double fadeTime = (targetReduction > _activeThrottleReduction) ? 0.1 : 1.2;
                 _activeThrottleReduction = MoveRatioToward(_activeThrottleReduction, targetReduction, fadeTime, elapsedSeconds);
 
-                // 4. Aplicăm reducerea netezită
                 outputRatio = Math.Max(0.0, outputRatio * (1.0 - _activeThrottleReduction));
 
                 SetThrottleValue(RatioToAxis(outputRatio));
@@ -1155,10 +1125,8 @@ namespace MouseToVJoy.ViewModels
                 double lagSeconds = pressed ? KeyboardBrakeLagUpSeconds : KeyboardBrakeLagDownSeconds;
                 _keyboardBrakeRawRatio = MoveRatioToward(_keyboardBrakeRawRatio, target, lagSeconds, elapsedSeconds);
 
-                // Aici calculăm outputRatio pentru Brake (este o variabilă locală, deci nu se încurcă cu cea de la Throttle)
                 double outputRatio = EnableKeyboardBrakeCurve ? ApplyResponseCurve(_keyboardBrakeRawRatio, KeyboardBrakeCurvePoints) : _keyboardBrakeRawRatio;
 
-                // Aplicarea reducerii pe Brake la virare
                 if (EnableKeyboardBrakeSteeringAssist)
                 {
                     double reduction = steeringFactor * KeyboardBrakeSteeringAssistStrength;
@@ -2016,6 +1984,8 @@ namespace MouseToVJoy.ViewModels
             return this;
         }
     }
+
+
 
     public readonly record struct ResponseCurvePoint(double X, double Y);
 }

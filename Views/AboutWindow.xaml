@@ -24,9 +24,15 @@
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,15">
             <StackPanel>
 
+                <!--Important-->
+                <TextBlock Text="Important:" FontSize="14" FontWeight="Bold" Foreground="#00ADB5" Margin="0,0,0,5"/>
+                <TextBlock Text="To make this program work, you need to instal vJoy!! Go on my github repository(github.com/anatoliesir/mouse-and-keyboard-to-vjoy), and find the BrunnerInnovation release link." 
+                            TextWrapping="Wrap" LineHeight="18" Foreground="#CCCCCC" Margin="0,0,0,15"/>
+
+                <Separator Background="#333333" Margin="0,0,0,15"/>
                 <!-- Description -->
                 <TextBlock Text="Description" FontSize="14" FontWeight="Bold" Foreground="#00ADB5" Margin="0,0,0,5"/>
-                <TextBlock Text="IMPORTANT: To make this program work, you need to instal vJoy!! Go on this github repo, and find the   |  MouseToVJoy is an application designed to emulate a virtual joystick (vJoy) using mouse movements and keyboard inputs. It provides smooth and progressive control, making it ideal for simracing games where steering precision is critical." 
+                <TextBlock Text="MouseToVJoy is an application designed to emulate a virtual joystick (vJoy) using mouse movements and keyboard inputs. It provides smooth and progressive control, making it ideal for simracing games where steering precision is critical." 
                            TextWrapping="Wrap" LineHeight="18" Foreground="#CCCCCC" Margin="0,0,0,15"/>
 
                 <Separator Background="#333333" Margin="0,0,0,15"/>
