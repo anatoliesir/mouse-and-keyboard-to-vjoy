@@ -6,7 +6,7 @@
       "Settings": {
         "PedalSensitivity": 23.694796061884634,
         "MousePedalDeadZone": 0.1265822784810126,
-        "WheelSensitivity": 0.1,
+        "WheelSensitivity": 0.08340365682137826,
         "EnableThrottle": true,
         "EnableBrake": true,
         "EnableKeyboardThrottle": true,
@@ -37,47 +37,53 @@
         "BrakeXDeadzoneDurationSeconds": 0.05,
         "EnableTrailBraking": true,
         "TrailBrakingRelease": 0.06,
-        "EnableKeyboardThrottleCurve": true,
+        "EnableKeyboardThrottleCurve": false,
         "KeyboardThrottleCurvePoints": "0,0;0.05,0.005;0.1,0.015;0.15,0.03;0.2,0.05;0.3,0.1;0.4,0.18;0.5,0.3;0.6,0.45;0.7,0.62;0.8,0.8;0.9,0.93;1,1",
-        "EnableKeyboardBrakeCurve": true,
+        "EnableKeyboardBrakeCurve": false,
         "KeyboardBrakeCurvePoints": "0,0;0.05,0.01;0.1,0.03;0.15,0.06;0.2,0.1;0.3,0.18;0.4,0.3;0.5,0.45;0.6,0.62;0.7,0.78;0.8,0.9;0.9,0.97;1,1",
         "EnableKeyboardBrakeSteeringAssist": true,
         "KeyboardBrakeSteeringAssistStrength": 1.4586070959264115,
         "EnableKeyboardThrottleSteeringAssist": true,
         "KeyboardThrottleSteeringAssistStrength": 1.4060446780551912,
         "KeyboardThrottleAssistIdleThreshold": 0.1,
-        "KeyboardThrottleAssistDuration": 4.081471747700392
+        "KeyboardThrottleAssistDuration": 4.081471747700392,
+        "KeyboardThrottleLimit": 1,
+        "KeyboardThrottleScrollSensitivity": 0.05,
+        "KeyboardThrottleScrollResetTime": 1,
+        "KeyboardBrakeLimit": 1,
+        "KeyboardBrakeScrollSensitivity": 0.05,
+        "KeyboardBrakeScrollResetTime": 1
       }
     },
     {
-      "Name": "Preset 2",
+      "Name": "Rally assetto corsa",
       "Settings": {
         "PedalSensitivity": 40,
         "MousePedalDeadZone": 0.1,
-        "WheelSensitivity": 0.1,
+        "WheelSensitivity": 0.07489451476793248,
         "EnableThrottle": true,
         "EnableBrake": true,
-        "EnableKeyboardThrottle": false,
-        "EnableKeyboardBrake": false,
+        "EnableKeyboardThrottle": true,
+        "EnableKeyboardBrake": true,
         "KeyboardThrottleKey": "W",
         "KeyboardBrakeKey": "S",
-        "KeyboardThrottleLagUpSeconds": 1,
-        "KeyboardThrottleLagDownSeconds": 0.7,
-        "KeyboardBrakeLagUpSeconds": 0.3,
+        "KeyboardThrottleLagUpSeconds": 0.9080157687253616,
+        "KeyboardThrottleLagDownSeconds": 0.6474375821287778,
+        "KeyboardBrakeLagUpSeconds": 0.40512483574244534,
         "KeyboardBrakeLagDownSeconds": 0.24,
         "EnableWheelCentering": false,
         "WheelReturnTimeSeconds": 20.95,
         "EnableBrakeResetting": false,
         "BrakeReturnTimeSeconds": 5,
         "EnableRightClickPedalMode": false,
-        "EnableCenterLockedCursor": false,
+        "EnableCenterLockedCursor": true,
         "EnableFullThrottleHold": false,
         "FullThrottleHoldDeadzone": 0.01,
         "EnableSteeringDampening": true,
-        "SteeringDampening": 0.7,
-        "EnableBrakeAssist": true,
+        "SteeringDampening": 0.6973277074542896,
+        "EnableBrakeAssist": false,
         "BrakeAssistThreshold": 0.7,
-        "BrakeAssistStrength": 0.35,
+        "BrakeAssistStrength": 0,
         "BrakeAssistHold": 0,
         "EnableBrakeXDeadzone": false,
         "BrakeXDeadzone": 0.04,
@@ -85,16 +91,22 @@
         "BrakeXDeadzoneDurationSeconds": 0.05,
         "EnableTrailBraking": true,
         "TrailBrakingRelease": 0.06,
-        "EnableKeyboardThrottleCurve": false,
-        "KeyboardThrottleCurvePoints": "0,0;0.25,0.15;0.5,0.5;0.75,0.85;1,1",
-        "EnableKeyboardBrakeCurve": false,
-        "KeyboardBrakeCurvePoints": "0,0;0.25,0.15;0.5,0.5;0.75,0.85;1,1",
+        "EnableKeyboardThrottleCurve": true,
+        "KeyboardThrottleCurvePoints": "0,0;0.05,0.005;0.1,0.015;0.15,0.03;0.2,0.05;0.3,0.1;0.4,0.18;0.5,0.3;0.6,0.45;0.7,0.62;0.8,0.8;0.9,0.93;1,1",
+        "EnableKeyboardBrakeCurve": true,
+        "KeyboardBrakeCurvePoints": "0,0;0.05,0.01;0.1,0.03;0.15,0.06;0.2,0.1;0.3,0.18;0.4,0.3;0.5,0.45;0.6,0.62;0.7,0.78;0.8,0.9;0.9,0.97;1,1",
         "EnableKeyboardBrakeSteeringAssist": false,
-        "KeyboardBrakeSteeringAssistStrength": 1,
-        "EnableKeyboardThrottleSteeringAssist": false,
-        "KeyboardThrottleSteeringAssistStrength": 1,
+        "KeyboardBrakeSteeringAssistStrength": 0.9999999999999993,
+        "EnableKeyboardThrottleSteeringAssist": true,
+        "KeyboardThrottleSteeringAssistStrength": 0.5952693823915901,
         "KeyboardThrottleAssistIdleThreshold": 0.1,
-        "KeyboardThrottleAssistDuration": 4
+        "KeyboardThrottleAssistDuration": 4,
+        "KeyboardThrottleLimit": 1,
+        "KeyboardThrottleScrollSensitivity": 0.05,
+        "KeyboardThrottleScrollResetTime": 1,
+        "KeyboardBrakeLimit": 1,
+        "KeyboardBrakeScrollSensitivity": 0.05,
+        "KeyboardBrakeScrollResetTime": 1
       }
     },
     {
@@ -142,7 +154,13 @@
         "EnableKeyboardThrottleSteeringAssist": false,
         "KeyboardThrottleSteeringAssistStrength": 0.5,
         "KeyboardThrottleAssistIdleThreshold": 1,
-        "KeyboardThrottleAssistDuration": 2
+        "KeyboardThrottleAssistDuration": 2,
+        "KeyboardThrottleLimit": 1,
+        "KeyboardThrottleScrollSensitivity": 0.05,
+        "KeyboardThrottleScrollResetTime": 1,
+        "KeyboardBrakeLimit": 1,
+        "KeyboardBrakeScrollSensitivity": 0.05,
+        "KeyboardBrakeScrollResetTime": 1
       }
     },
     {
@@ -190,7 +208,13 @@
         "EnableKeyboardThrottleSteeringAssist": false,
         "KeyboardThrottleSteeringAssistStrength": 0.5,
         "KeyboardThrottleAssistIdleThreshold": 1,
-        "KeyboardThrottleAssistDuration": 2
+        "KeyboardThrottleAssistDuration": 2,
+        "KeyboardThrottleLimit": 1,
+        "KeyboardThrottleScrollSensitivity": 0.05,
+        "KeyboardThrottleScrollResetTime": 1,
+        "KeyboardBrakeLimit": 1,
+        "KeyboardBrakeScrollSensitivity": 0.05,
+        "KeyboardBrakeScrollResetTime": 1
       }
     },
     {
@@ -238,13 +262,19 @@
         "EnableKeyboardThrottleSteeringAssist": false,
         "KeyboardThrottleSteeringAssistStrength": 0.5,
         "KeyboardThrottleAssistIdleThreshold": 1,
-        "KeyboardThrottleAssistDuration": 2
+        "KeyboardThrottleAssistDuration": 2,
+        "KeyboardThrottleLimit": 1,
+        "KeyboardThrottleScrollSensitivity": 0.05,
+        "KeyboardThrottleScrollResetTime": 1,
+        "KeyboardBrakeLimit": 1,
+        "KeyboardBrakeScrollSensitivity": 0.05,
+        "KeyboardBrakeScrollResetTime": 1
       }
     },
     {
       "Name": "Preset 6",
       "Settings": {
-        "PedalSensitivity": 0,
+        "PedalSensitivity": 40,
         "MousePedalDeadZone": 0.1,
         "WheelSensitivity": 0.1,
         "EnableThrottle": true,
@@ -286,14 +316,20 @@
         "EnableKeyboardThrottleSteeringAssist": false,
         "KeyboardThrottleSteeringAssistStrength": 0.5,
         "KeyboardThrottleAssistIdleThreshold": 1,
-        "KeyboardThrottleAssistDuration": 2
+        "KeyboardThrottleAssistDuration": 2,
+        "KeyboardThrottleLimit": 1,
+        "KeyboardThrottleScrollSensitivity": 0.05,
+        "KeyboardThrottleScrollResetTime": 1,
+        "KeyboardBrakeLimit": 1,
+        "KeyboardBrakeScrollSensitivity": 0.05,
+        "KeyboardBrakeScrollResetTime": 1
       }
     },
     {
       "Name": "Preset 7",
       "Settings": {
-        "PedalSensitivity": 75,
-        "MousePedalDeadZone": 0.03,
+        "PedalSensitivity": 40,
+        "MousePedalDeadZone": 0.1,
         "WheelSensitivity": 0.1,
         "EnableThrottle": true,
         "EnableBrake": true,
@@ -334,14 +370,20 @@
         "EnableKeyboardThrottleSteeringAssist": false,
         "KeyboardThrottleSteeringAssistStrength": 0.5,
         "KeyboardThrottleAssistIdleThreshold": 1,
-        "KeyboardThrottleAssistDuration": 2
+        "KeyboardThrottleAssistDuration": 2,
+        "KeyboardThrottleLimit": 1,
+        "KeyboardThrottleScrollSensitivity": 0.05,
+        "KeyboardThrottleScrollResetTime": 1,
+        "KeyboardBrakeLimit": 1,
+        "KeyboardBrakeScrollSensitivity": 0.05,
+        "KeyboardBrakeScrollResetTime": 1
       }
     },
     {
       "Name": "Preset 8",
       "Settings": {
-        "PedalSensitivity": 75,
-        "MousePedalDeadZone": 0.03,
+        "PedalSensitivity": 40,
+        "MousePedalDeadZone": 0.1,
         "WheelSensitivity": 0.1,
         "EnableThrottle": true,
         "EnableBrake": true,
@@ -382,14 +424,20 @@
         "EnableKeyboardThrottleSteeringAssist": false,
         "KeyboardThrottleSteeringAssistStrength": 0.5,
         "KeyboardThrottleAssistIdleThreshold": 1,
-        "KeyboardThrottleAssistDuration": 2
+        "KeyboardThrottleAssistDuration": 2,
+        "KeyboardThrottleLimit": 1,
+        "KeyboardThrottleScrollSensitivity": 0.05,
+        "KeyboardThrottleScrollResetTime": 1,
+        "KeyboardBrakeLimit": 1,
+        "KeyboardBrakeScrollSensitivity": 0.05,
+        "KeyboardBrakeScrollResetTime": 1
       }
     },
     {
       "Name": "Preset 9",
       "Settings": {
-        "PedalSensitivity": 75,
-        "MousePedalDeadZone": 0.03,
+        "PedalSensitivity": 40,
+        "MousePedalDeadZone": 0.1,
         "WheelSensitivity": 0.1,
         "EnableThrottle": true,
         "EnableBrake": true,
@@ -430,14 +478,20 @@
         "EnableKeyboardThrottleSteeringAssist": false,
         "KeyboardThrottleSteeringAssistStrength": 0.5,
         "KeyboardThrottleAssistIdleThreshold": 1,
-        "KeyboardThrottleAssistDuration": 2
+        "KeyboardThrottleAssistDuration": 2,
+        "KeyboardThrottleLimit": 1,
+        "KeyboardThrottleScrollSensitivity": 0.05,
+        "KeyboardThrottleScrollResetTime": 1,
+        "KeyboardBrakeLimit": 1,
+        "KeyboardBrakeScrollSensitivity": 0.05,
+        "KeyboardBrakeScrollResetTime": 1
       }
     },
     {
       "Name": "Preset 10",
       "Settings": {
-        "PedalSensitivity": 75,
-        "MousePedalDeadZone": 0.03,
+        "PedalSensitivity": 40,
+        "MousePedalDeadZone": 0.1,
         "WheelSensitivity": 0.1,
         "EnableThrottle": true,
         "EnableBrake": true,
@@ -478,7 +532,13 @@
         "EnableKeyboardThrottleSteeringAssist": false,
         "KeyboardThrottleSteeringAssistStrength": 0.5,
         "KeyboardThrottleAssistIdleThreshold": 1,
-        "KeyboardThrottleAssistDuration": 2
+        "KeyboardThrottleAssistDuration": 2,
+        "KeyboardThrottleLimit": 1,
+        "KeyboardThrottleScrollSensitivity": 0.05,
+        "KeyboardThrottleScrollResetTime": 1,
+        "KeyboardBrakeLimit": 1,
+        "KeyboardBrakeScrollSensitivity": 0.05,
+        "KeyboardBrakeScrollResetTime": 1
       }
     }
   ]

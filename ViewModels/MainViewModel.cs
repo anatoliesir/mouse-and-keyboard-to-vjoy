@@ -90,7 +90,7 @@ namespace MouseToVJoy.ViewModels
         private double _brakeReturnTimeSeconds = 5.0;
         private double _lastRawBrakeValue = 0.0;
         private double _brakeIdleTimer = 0.0;
-        private const double BrakeIdleDelaySeconds = 0.1; 
+        private const double BrakeIdleDelaySeconds = 0.1;
 
         private bool _enableKeyboardThrottleCurve;
         private string _keyboardThrottleCurvePoints = PresetSettings.DefaultResponseCurvePoints;
@@ -110,34 +110,59 @@ namespace MouseToVJoy.ViewModels
         private bool _wasThrottlePressed = false;
         private double _activeThrottleReduction = 0.0;
 
-        public bool EnableKeyboardThrottleCurve 
+        // --- NEW VARIABLES FOR SCROLL ADJUST ---
+        private double _keyboardThrottleLimit = 1.0;
+        private double _keyboardThrottleScrollSensitivity = 0.05;
+        private double _keyboardThrottleScrollResetTime = 1.0;
+        private double _throttleScrollOffset = 0.0;
+        private double _throttleScrollResetTimer = 0.0;
+
+        private double _keyboardBrakeLimit = 1.0;
+        private double _keyboardBrakeScrollSensitivity = 0.05;
+        private double _keyboardBrakeScrollResetTime = 1.0;
+        private double _brakeScrollOffset = 0.0;
+        private double _brakeScrollResetTimer = 0.0;
+        // ---------------------------------------
+
+        public bool EnableKeyboardThrottleCurve
         { get => _enableKeyboardThrottleCurve; set => SetSetting(ref _enableKeyboardThrottleCurve, value); }
-        public string KeyboardThrottleCurvePoints 
+        public string KeyboardThrottleCurvePoints
         { get => _keyboardThrottleCurvePoints; set => SetSetting(ref _keyboardThrottleCurvePoints, string.IsNullOrWhiteSpace(value) ? PresetSettings.DefaultResponseCurvePoints : value.Trim()); }
-        public bool EnableKeyboardBrakeCurve 
+        public bool EnableKeyboardBrakeCurve
         { get => _enableKeyboardBrakeCurve; set => SetSetting(ref _enableKeyboardBrakeCurve, value); }
-        public string KeyboardBrakeCurvePoints 
+        public string KeyboardBrakeCurvePoints
         { get => _keyboardBrakeCurvePoints; set => SetSetting(ref _keyboardBrakeCurvePoints, string.IsNullOrWhiteSpace(value) ? PresetSettings.DefaultResponseCurvePoints : value.Trim()); }
 
-        public bool EnableKeyboardBrakeSteeringAssist 
+        public bool EnableKeyboardBrakeSteeringAssist
         { get => _enableKeyboardBrakeSteeringAssist; set => SetSetting(ref _enableKeyboardBrakeSteeringAssist, value); }
-        public double KeyboardBrakeSteeringAssistStrength 
+        public double KeyboardBrakeSteeringAssistStrength
         { get => _keyboardBrakeSteeringAssistStrength; set => SetSetting(ref _keyboardBrakeSteeringAssistStrength, Math.Clamp(value, 0.0, 2.0)); }
 
-        public bool EnableKeyboardThrottleSteeringAssist 
+        public bool EnableKeyboardThrottleSteeringAssist
         { get => _enableKeyboardThrottleSteeringAssist; set => SetSetting(ref _enableKeyboardThrottleSteeringAssist, value); }
-        public double KeyboardThrottleSteeringAssistStrength 
+        public double KeyboardThrottleSteeringAssistStrength
         { get => _keyboardThrottleSteeringAssistStrength; set => SetSetting(ref _keyboardThrottleSteeringAssistStrength, Math.Clamp(value, 0.0, 2.0)); }
-        public double KeyboardThrottleAssistIdleThreshold 
+        public double KeyboardThrottleAssistIdleThreshold
         { get => _keyboardThrottleAssistIdleThreshold; set => SetSetting(ref _keyboardThrottleAssistIdleThreshold, Math.Clamp(value, 0.1, 10.0)); }
-        public double KeyboardThrottleAssistDuration 
+        public double KeyboardThrottleAssistDuration
         { get => _keyboardThrottleAssistDuration; set => SetSetting(ref _keyboardThrottleAssistDuration, Math.Clamp(value, 0.1, 10.0)); }
+
+        // --- NEW PROPERTIES FOR SCROLL ADJUST ---
+        public double KeyboardThrottleLimit { get => _keyboardThrottleLimit; set => SetSetting(ref _keyboardThrottleLimit, Math.Clamp(value, 0.01, 1.0)); }
+        public double KeyboardThrottleScrollSensitivity { get => _keyboardThrottleScrollSensitivity; set => SetSetting(ref _keyboardThrottleScrollSensitivity, Math.Clamp(value, 0.01, 0.5)); }
+        public double KeyboardThrottleScrollResetTime { get => _keyboardThrottleScrollResetTime; set => SetSetting(ref _keyboardThrottleScrollResetTime, Math.Clamp(value, 0.0, 60.0)); }
+
+        public double KeyboardBrakeLimit { get => _keyboardBrakeLimit; set => SetSetting(ref _keyboardBrakeLimit, Math.Clamp(value, 0.01, 1.0)); }
+        public double KeyboardBrakeScrollSensitivity { get => _keyboardBrakeScrollSensitivity; set => SetSetting(ref _keyboardBrakeScrollSensitivity, Math.Clamp(value, 0.01, 0.5)); }
+        public double KeyboardBrakeScrollResetTime { get => _keyboardBrakeScrollResetTime; set => SetSetting(ref _keyboardBrakeScrollResetTime, Math.Clamp(value, 0.0, 60.0)); }
+        // ----------------------------------------
 
         private const int WM_INPUT = 0x00FF;
         private const int WH_MOUSE_LL = 14;
         private const int WM_MBUTTONDOWN = 0x0207;
         private const int WM_RBUTTONDOWN = 0x0204;
         private const int WM_RBUTTONUP = 0x0205;
+        private const int WM_MOUSEWHEEL = 0x020A;
         private const int RIM_TYPEMOUSE = 0;
         private const int RID_INPUT = 0x10000003;
         private const uint RIDEV_INPUTSINK = 0x00000100;
@@ -673,22 +698,58 @@ namespace MouseToVJoy.ViewModels
 
         private IntPtr MouseHookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            if (nCode >= 0 && wParam == (IntPtr)WM_MBUTTONDOWN)
+            if (nCode >= 0)
             {
-                _uiDispatcher.BeginInvoke(ToggleSteering);
-            }
-            else if (nCode >= 0 && wParam == (IntPtr)WM_RBUTTONDOWN && EnableRightClickPedalMode)
-            {
-                _uiDispatcher.BeginInvoke(SetPedalModeActive);
-                return (IntPtr)1;
-            }
-            else if (nCode >= 0 && wParam == (IntPtr)WM_RBUTTONUP && EnableRightClickPedalMode)
-            {
-                _uiDispatcher.BeginInvoke(SetPedalModeInactive);
-                return (IntPtr)1;
+                int message = wParam.ToInt32();
+
+                if (message == WM_MBUTTONDOWN)
+                {
+                    _uiDispatcher.BeginInvoke(ToggleSteering);
+                }
+                else if (message == WM_RBUTTONDOWN && EnableRightClickPedalMode)
+                {
+                    _uiDispatcher.BeginInvoke(SetPedalModeActive);
+                    return (IntPtr)1;
+                }
+                else if (message == WM_RBUTTONUP && EnableRightClickPedalMode)
+                {
+                    _uiDispatcher.BeginInvoke(SetPedalModeInactive);
+                    return (IntPtr)1;
+                }
+                else if (message == WM_MOUSEWHEEL)
+                {
+                    MSLLHOOKSTRUCT hookStruct = Marshal.PtrToStructure<MSLLHOOKSTRUCT>(lParam);
+                    short wheelDelta = (short)(hookStruct.mouseData >> 16);
+
+                    bool throttlePressed = EnableKeyboardThrottle && IsKeyDown(GetVirtualKey(KeyboardThrottleKey));
+                    bool brakePressed = EnableKeyboardBrake && IsKeyDown(GetVirtualKey(KeyboardBrakeKey));
+
+                    if (throttlePressed || brakePressed)
+                    {
+                        _uiDispatcher.BeginInvoke(() => HandleMouseWheel(wheelDelta, throttlePressed, brakePressed));
+                        return (IntPtr)1; // Block default scrolling while adjusting limits
+                    }
+                }
             }
 
             return CallNextHookEx(_mouseHookId, nCode, wParam, lParam);
+        }
+
+        private void HandleMouseWheel(short delta, bool throttlePressed, bool brakePressed)
+        {
+            if (!IsRunning) return;
+
+            int ticks = delta / 120;
+
+            if (throttlePressed)
+            {
+                _throttleScrollOffset += ticks * KeyboardThrottleScrollSensitivity;
+            }
+
+            if (brakePressed)
+            {
+                _brakeScrollOffset += ticks * KeyboardBrakeScrollSensitivity;
+            }
         }
 
         private void ToggleSteering()
@@ -1033,8 +1094,6 @@ namespace MouseToVJoy.ViewModels
                 ApplyWheelTarget(ApplyTimedCentering(_virtualWheelValue, AxisCenter, WheelReturnTimeSeconds, elapsedSeconds));
             }
 
-
-
             bool isolateBrake = IsKeyDown(VK_3) || IsKeyDown(VK_NUMPAD3);
 
             if (_mousePedalRawCombinedValue > _lastRawBrakeValue)
@@ -1075,9 +1134,18 @@ namespace MouseToVJoy.ViewModels
                 if (!pressed)
                 {
                     _throttleIdleTimer += elapsedSeconds;
+
+                    // Reset scroll adjustment based on user configuration
+                    _throttleScrollResetTimer += elapsedSeconds;
+                    if (_throttleScrollResetTimer >= KeyboardThrottleScrollResetTime)
+                    {
+                        _throttleScrollOffset = 0.0;
+                    }
                 }
                 else
                 {
+                    _throttleScrollResetTimer = 0.0;
+
                     if (!_wasThrottlePressed && _throttleIdleTimer >= KeyboardThrottleAssistIdleThreshold)
                     {
                         _throttleAssistActiveTimer = KeyboardThrottleAssistDuration;
@@ -1086,7 +1154,12 @@ namespace MouseToVJoy.ViewModels
                 }
                 _wasThrottlePressed = pressed;
 
-                double target = pressed ? 1.0 : 0.0;
+                double target = 0.0;
+                if (pressed)
+                {
+                    target = Math.Clamp(KeyboardThrottleLimit + _throttleScrollOffset, 0.0, 1.0);
+                }
+
                 double lagSeconds = pressed ? KeyboardThrottleLagUpSeconds : KeyboardThrottleLagDownSeconds;
                 _keyboardThrottleRawRatio = MoveRatioToward(_keyboardThrottleRawRatio, target, lagSeconds, elapsedSeconds);
 
@@ -1121,7 +1194,26 @@ namespace MouseToVJoy.ViewModels
             if (EnableBrake && EnableKeyboardBrake)
             {
                 bool pressed = IsKeyDown(GetVirtualKey(KeyboardBrakeKey));
-                double target = pressed ? 1.0 : 0.0;
+                if (!pressed)
+                {
+                    // Reset scroll adjustment based on user configuration
+                    _brakeScrollResetTimer += elapsedSeconds;
+                    if (_brakeScrollResetTimer >= KeyboardBrakeScrollResetTime)
+                    {
+                        _brakeScrollOffset = 0.0;
+                    }
+                }
+                else
+                {
+                    _brakeScrollResetTimer = 0.0;
+                }
+
+                double target = 0.0;
+                if (pressed)
+                {
+                    target = Math.Clamp(KeyboardBrakeLimit + _brakeScrollOffset, 0.0, 1.0);
+                }
+
                 double lagSeconds = pressed ? KeyboardBrakeLagUpSeconds : KeyboardBrakeLagDownSeconds;
                 _keyboardBrakeRawRatio = MoveRatioToward(_keyboardBrakeRawRatio, target, lagSeconds, elapsedSeconds);
 
@@ -1150,6 +1242,8 @@ namespace MouseToVJoy.ViewModels
             _brakeStabilityRatio = 0.0;
             _keyboardThrottleRawRatio = 0.0;
             _keyboardBrakeRawRatio = 0.0;
+            _throttleScrollOffset = 0.0;
+            _brakeScrollOffset = 0.0;
         }
 
         private void SendAxesToVJoy()
@@ -1315,6 +1409,8 @@ namespace MouseToVJoy.ViewModels
 
         private PresetSettings CaptureSettings()
         {
+            // Note for you: Ensure your PresetSettings class is updated to hold these 6 new properties 
+            // otherwise they won't save and load from the presets.json file!
             return new PresetSettings
             {
                 PedalSensitivity = PedalSensitivity,
@@ -1360,7 +1456,15 @@ namespace MouseToVJoy.ViewModels
                 EnableKeyboardThrottleSteeringAssist = EnableKeyboardThrottleSteeringAssist,
                 KeyboardThrottleSteeringAssistStrength = KeyboardThrottleSteeringAssistStrength,
                 KeyboardThrottleAssistIdleThreshold = KeyboardThrottleAssistIdleThreshold,
-                KeyboardThrottleAssistDuration = KeyboardThrottleAssistDuration
+                KeyboardThrottleAssistDuration = KeyboardThrottleAssistDuration,
+
+                // New properties mapping
+                KeyboardThrottleLimit = KeyboardThrottleLimit,
+                KeyboardThrottleScrollSensitivity = KeyboardThrottleScrollSensitivity,
+                KeyboardThrottleScrollResetTime = KeyboardThrottleScrollResetTime,
+                KeyboardBrakeLimit = KeyboardBrakeLimit,
+                KeyboardBrakeScrollSensitivity = KeyboardBrakeScrollSensitivity,
+                KeyboardBrakeScrollResetTime = KeyboardBrakeScrollResetTime
             };
         }
 
@@ -1410,6 +1514,14 @@ namespace MouseToVJoy.ViewModels
             KeyboardThrottleSteeringAssistStrength = settings.KeyboardThrottleSteeringAssistStrength;
             KeyboardThrottleAssistIdleThreshold = settings.KeyboardThrottleAssistIdleThreshold;
             KeyboardThrottleAssistDuration = settings.KeyboardThrottleAssistDuration;
+
+            // Apply new properties (you will need to make sure your PresetSettings object provides these)
+            KeyboardThrottleLimit = settings.KeyboardThrottleLimit;
+            KeyboardThrottleScrollSensitivity = settings.KeyboardThrottleScrollSensitivity;
+            KeyboardThrottleScrollResetTime = settings.KeyboardThrottleScrollResetTime;
+            KeyboardBrakeLimit = settings.KeyboardBrakeLimit;
+            KeyboardBrakeScrollSensitivity = settings.KeyboardBrakeScrollSensitivity;
+            KeyboardBrakeScrollResetTime = settings.KeyboardBrakeScrollResetTime;
         }
 
         private void LoadPresetFile()
@@ -1497,8 +1609,6 @@ namespace MouseToVJoy.ViewModels
             StatusMessage = message;
         }
 
-
-
         private void ExecuteOpenThrottleCurveEditor(object? parameter)
         {
             ResponseCurveEditorWindow editor = new(KeyboardThrottleCurvePoints) { Owner = Application.Current?.MainWindow };
@@ -1520,8 +1630,6 @@ namespace MouseToVJoy.ViewModels
                 StatusMessage = "Brake response curve updated.";
             }
         }
-
-
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -1720,6 +1828,7 @@ namespace MouseToVJoy.ViewModels
             _cursorHidden = false;
         }
 
+        // --- P/Invokes and structs to fix the original cut-off file ---
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool RegisterRawInputDevices(
             [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] RawInputDevice[] rawInputDevices,
@@ -1744,248 +1853,36 @@ namespace MouseToVJoy.ViewModels
         private static extern bool SetCursorPos(int x, int y);
 
         [DllImport("user32.dll")]
-        private static extern int GetSystemMetrics(int index);
+        private static extern int ShowCursor(bool bShow);
 
         [DllImport("user32.dll")]
-        private static extern int ShowCursor(bool show);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern bool ClipCursor(IntPtr rect);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern bool ClipCursor(ref CursorClipRect rect);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern IntPtr SetWindowsHookEx(int idHook, MouseHookHandler callback, IntPtr moduleHandle, uint threadId);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern bool UnhookWindowsHookEx(IntPtr hook);
+        private static extern bool ClipCursor(ref CursorClipRect lpRect);
 
         [DllImport("user32.dll")]
-        private static extern IntPtr CallNextHookEx(IntPtr hook, int code, IntPtr wParam, IntPtr lParam);
+        private static extern bool ClipCursor(IntPtr lpRect);
+
+        [DllImport("user32.dll")]
+        private static extern int GetSystemMetrics(int nIndex);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr SetWindowsHookEx(int idHook, MouseHookHandler lpfn, IntPtr hMod, uint dwThreadId);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool UnhookWindowsHookEx(IntPtr hhk);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
         private delegate IntPtr MouseHookHandler(int nCode, IntPtr wParam, IntPtr lParam);
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct RawInputDevice
+        private struct MSLLHOOKSTRUCT
         {
-            public ushort UsagePage;
-            public ushort Usage;
-            public uint Flags;
-            public IntPtr Target;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct RawInputHeader
-        {
-            public uint Type;
-            public uint Size;
-            public IntPtr Device;
-            public IntPtr WParam;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct RawInput
-        {
-            public RawInputHeader Header;
-            public RawMouse Mouse;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct RawMouse
-        {
-            public ushort Flags;
-            public ushort ButtonFlags;
-            public ushort ButtonData;
-            public uint RawButtons;
-            public int LastX;
-            public int LastY;
-            public uint ExtraInformation;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct CursorPoint
-        {
-            public int X;
-            public int Y;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct CursorClipRect
-        {
-            public int Left;
-            public int Top;
-            public int Right;
-            public int Bottom;
-        }
-
-        private readonly record struct RawMouseData(int LastX, int LastY);
-    }
-
-    public class PresetSlotViewModel : INotifyPropertyChanged
-    {
-        private string _name;
-        private PresetSettings _settings;
-
-        public PresetSlotViewModel(int slotIndex, string name, PresetSettings settings)
-        {
-            SlotIndex = slotIndex;
-            _name = string.IsNullOrWhiteSpace(name) ? $"Preset {slotIndex + 1}" : name;
-            _settings = settings;
-        }
-
-        public int SlotIndex { get; }
-
-        public string DisplayName => $"{SlotIndex + 1}. {Name}";
-
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                if (_name == value) return;
-                _name = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(DisplayName));
-            }
-        }
-
-        public PresetSettings Settings
-        {
-            get => _settings;
-            set
-            {
-                _settings = value ?? PresetSettings.CreateDefault();
-                OnPropertyChanged();
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            public CursorPoint pt;
+            public uint mouseData;
+            public uint flags;
+            public uint time;
+            public IntPtr dwExtraInfo;
         }
     }
-
-    public class PresetSettings
-    {
-        public const string DefaultResponseCurvePoints = "0,0;0.25,0.15;0.5,0.5;0.75,0.85;1,1";
-
-        public double PedalSensitivity { get; set; } = 40;
-        public double MousePedalDeadZone { get; set; } = 0.1;
-        public double WheelSensitivity { get; set; } = 0.1;
-        public bool EnableThrottle { get; set; } = true;
-        public bool EnableBrake { get; set; } = true;
-        public bool EnableKeyboardThrottle { get; set; }
-        public bool EnableKeyboardBrake { get; set; }
-        public string KeyboardThrottleKey { get; set; } = "W";
-        public string KeyboardBrakeKey { get; set; } = "S";
-        public double KeyboardThrottleLagUpSeconds { get; set; } = 1;
-        public double KeyboardThrottleLagDownSeconds { get; set; } = 0.7;
-        public double KeyboardBrakeLagUpSeconds { get; set; } = 0.3;
-        public double KeyboardBrakeLagDownSeconds { get; set; } = 0.24;
-        public bool EnableWheelCentering { get; set; }
-        public double WheelReturnTimeSeconds { get; set; } = 20.95;
-        public bool EnableBrakeResetting { get; set; }
-        public double BrakeReturnTimeSeconds { get; set; } = 5.0;
-        public bool EnableRightClickPedalMode { get; set; } = false;
-        public bool EnableCenterLockedCursor { get; set; }
-        public bool EnableFullThrottleHold { get; set; } = false;
-        public double FullThrottleHoldDeadzone { get; set; } = 0.01;
-        public bool EnableSteeringDampening { get; set; } = true;
-        public double SteeringDampening { get; set; } = 0.70;
-        public bool EnableBrakeAssist { get; set; } = true;
-        public double BrakeAssistThreshold { get; set; } = 0.70;
-        public double BrakeAssistStrength { get; set; } = 0.35;
-        public double BrakeAssistHold { get; set; }
-        public bool EnableBrakeXDeadzone { get; set; } = false;
-        public double BrakeXDeadzone { get; set; } = 0.04;
-        public bool EnableTimedBrakeXDeadzone { get; set; } = false;
-        public double BrakeXDeadzoneDurationSeconds { get; set; } = 0.05;
-        public bool EnableTrailBraking { get; set; } = true;
-        public double TrailBrakingRelease { get; set; } = 0.06;
-        public bool EnableKeyboardThrottleCurve { get; set; }
-        public string KeyboardThrottleCurvePoints { get; set; } = DefaultResponseCurvePoints;
-        public bool EnableKeyboardBrakeCurve { get; set; }
-        public string KeyboardBrakeCurvePoints { get; set; } = DefaultResponseCurvePoints;
-
-        public bool EnableKeyboardBrakeSteeringAssist { get; set; }
-        public double KeyboardBrakeSteeringAssistStrength { get; set; } = 1; // 0.0 - 2.0
-
-        public bool EnableKeyboardThrottleSteeringAssist { get; set; }
-        public double KeyboardThrottleSteeringAssistStrength { get; set; } = 1;
-        public double KeyboardThrottleAssistIdleThreshold { get; set; } = 0.1; // secunde
-        public double KeyboardThrottleAssistDuration { get; set; } = 4.0; // secunde
-        public static PresetSettings CreateDefault()
-        {
-            return new PresetSettings();
-        }
-    }
-
-    public class PresetSlotData
-    {
-        public string Name { get; set; } = string.Empty;
-        public PresetSettings Settings { get; set; } = PresetSettings.CreateDefault();
-
-        public static PresetSlotData CreateDefault(int slotIndex)
-        {
-            return new PresetSlotData
-            {
-                Name = $"Preset {slotIndex + 1}",
-                Settings = PresetSettings.CreateDefault()
-            };
-        }
-    }
-
-    public class PresetFileData
-    {
-        public const int PresetSlotCount = 10;
-
-        public int ActivePresetIndex { get; set; }
-        public Collection<PresetSlotData> Presets { get; set; } = new();
-
-        public static PresetFileData CreateDefault()
-        {
-            PresetFileData data = new();
-            for (int i = 0; i < PresetSlotCount; i++)
-            {
-                data.Presets.Add(PresetSlotData.CreateDefault(i));
-            }
-
-            return data;
-        }
-
-        public PresetFileData Normalize()
-        {
-            ActivePresetIndex = Math.Clamp(ActivePresetIndex, 0, PresetSlotCount - 1);
-
-            while (Presets.Count < PresetSlotCount)
-            {
-                Presets.Add(PresetSlotData.CreateDefault(Presets.Count));
-            }
-
-            while (Presets.Count > PresetSlotCount)
-            {
-                Presets.RemoveAt(Presets.Count - 1);
-            }
-
-            for (int i = 0; i < Presets.Count; i++)
-            {
-                Presets[i] ??= PresetSlotData.CreateDefault(i);
-                if (string.IsNullOrWhiteSpace(Presets[i].Name))
-                {
-                    Presets[i].Name = $"Preset {i + 1}";
-                }
-
-                Presets[i].Settings ??= PresetSettings.CreateDefault();
-            }
-
-            return this;
-        }
-    }
-
-
-
-    public readonly record struct ResponseCurvePoint(double X, double Y);
 }

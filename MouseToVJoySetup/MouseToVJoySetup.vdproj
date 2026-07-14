@@ -15,44 +15,50 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_1CCC7FD5389B4525B65A7707A1B36CBB"
+        "MsmKey" = "8:_2CADA0828FC74D31BF34192F849B9763"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_2253899F217244B78E3FDAA638667C70"
+        "MsmKey" = "8:_2E730F75DA2B4E4C916BBF8A5E6C9661"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_73A8F0DB1FEE458895C3B6473A2D2820"
+        "MsmKey" = "8:_6EC924C311FE4F15B70F0E128547D032"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_B196F10BDDB1464B830CD2034740DE10"
+        "MsmKey" = "8:_A0EB880F7A7143ADA499E784DFC5DB56"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_BE39258978FC4DB180A3AC18CCE9B45B"
+        "MsmKey" = "8:_BA432579A94345FE9E5FD62A8C2E928A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C339088425D54280A4D1F0F15E9FF00C"
+        "MsmKey" = "8:_C1C72DC438C140DFA2A90B647FDD0DB4"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DC6CDA387834478F93ACB6426FBFB62C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2253899F217244B78E3FDAA638667C70"
+        "OwnerKey" = "8:_DC6CDA387834478F93ACB6426FBFB62C"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -73,6 +79,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -89,6 +103,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -118,80 +140,9 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1CCC7FD5389B4525B65A7707A1B36CBB"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2CADA0828FC74D31BF34192F849B9763"
             {
-            "SourcePath" = "8:..\\bin\\Release\\net8.0-windows\\publish\\vJoyInterface.dll"
-            "TargetName" = "8:vJoyInterface.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_69B952FCA03A42D8AC745633E01C5314"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2253899F217244B78E3FDAA638667C70"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:MouseToVJoy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_2253899F217244B78E3FDAA638667C70"
-                    {
-                    "Name" = "8:MouseToVJoy.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:..\\bin\\Release\\net8.0-windows\\publish\\MouseToVJoy.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_69B952FCA03A42D8AC745633E01C5314"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_73A8F0DB1FEE458895C3B6473A2D2820"
-            {
-            "SourcePath" = "8:..\\bin\\Release\\net8.0-windows\\publish\\MouseToVJoy.exe"
-            "TargetName" = "8:MouseToVJoy.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_69B952FCA03A42D8AC745633E01C5314"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B196F10BDDB1464B830CD2034740DE10"
-            {
-            "SourcePath" = "8:C:\\Users\\razva\\Downloads\\keyboard-and-mouse.ico"
+            "SourcePath" = "8:..\\keyboard-and-mouse.ico"
             "TargetName" = "8:keyboard-and-mouse.ico"
             "Tag" = "8:"
             "Folder" = "8:_69B952FCA03A42D8AC745633E01C5314"
@@ -209,7 +160,7 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BE39258978FC4DB180A3AC18CCE9B45B"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2E730F75DA2B4E4C916BBF8A5E6C9661"
             {
             "SourcePath" = "8:..\\bin\\Release\\net8.0-windows\\publish\\MouseToVJoy.pdb"
             "TargetName" = "8:MouseToVJoy.pdb"
@@ -229,10 +180,101 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C339088425D54280A4D1F0F15E9FF00C"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6EC924C311FE4F15B70F0E128547D032"
             {
             "SourcePath" = "8:..\\bin\\Release\\net8.0-windows\\publish\\MouseToVJoy.runtimeconfig.json"
             "TargetName" = "8:MouseToVJoy.runtimeconfig.json"
+            "Tag" = "8:"
+            "Folder" = "8:_69B952FCA03A42D8AC745633E01C5314"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A0EB880F7A7143ADA499E784DFC5DB56"
+            {
+            "SourcePath" = "8:..\\bin\\Release\\net8.0-windows\\publish\\vJoyInterface.dll"
+            "TargetName" = "8:vJoyInterface.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_69B952FCA03A42D8AC745633E01C5314"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BA432579A94345FE9E5FD62A8C2E928A"
+            {
+            "SourcePath" = "8:..\\bin\\Release\\net8.0-windows\\publish\\MouseToVJoy.deps.json"
+            "TargetName" = "8:MouseToVJoy.deps.json"
+            "Tag" = "8:"
+            "Folder" = "8:_69B952FCA03A42D8AC745633E01C5314"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C1C72DC438C140DFA2A90B647FDD0DB4"
+            {
+            "SourcePath" = "8:..\\bin\\Release\\net8.0-windows\\publish\\MouseToVJoy.exe"
+            "TargetName" = "8:MouseToVJoy.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_69B952FCA03A42D8AC745633E01C5314"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DC6CDA387834478F93ACB6426FBFB62C"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:MouseToVJoy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_DC6CDA387834478F93ACB6426FBFB62C"
+                    {
+                    "Name" = "8:MouseToVJoy.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\bin\\Release\\net8.0-windows\\publish\\MouseToVJoy.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_69B952FCA03A42D8AC745633E01C5314"
             "Condition" = "8:"
@@ -426,7 +468,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_FAFED984701A4EADB1F34AFCDB36EC98"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_3389CE70C4C445338DD94803A81ADDAA"
             {
             "Name" = "8:MouseToVJoy"
             "Arguments" = "8:"
@@ -434,10 +476,24 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_73A8F0DB1FEE458895C3B6473A2D2820"
+            "Target" = "8:_C1C72DC438C140DFA2A90B647FDD0DB4"
             "Folder" = "8:_010ECBB7FC414DBA8CE1E405DF2E237B"
             "WorkingFolder" = "8:_69B952FCA03A42D8AC745633E01C5314"
-            "Icon" = "8:_B196F10BDDB1464B830CD2034740DE10"
+            "Icon" = "8:_2CADA0828FC74D31BF34192F849B9763"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_63074858A83443528D59B789BE435099"
+            {
+            "Name" = "8:MouseToVJoy"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_C1C72DC438C140DFA2A90B647FDD0DB4"
+            "Folder" = "8:_EA723786AEEF4C0DBD8DCBA5AA5FBC0D"
+            "WorkingFolder" = "8:_69B952FCA03A42D8AC745633E01C5314"
+            "Icon" = "8:_2CADA0828FC74D31BF34192F849B9763"
             "Feature" = "8:"
             }
         }
