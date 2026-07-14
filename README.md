@@ -1,8 +1,10 @@
 # MouseAndKeyboardToVJoy
 This project has the scope to improve a keyboard and mouse's player experience when SimRacing.\
-It was officially tested on **'Assetto Corsa'**, so it is not guaranteed that it will help on other sim racing games.
+It was officially tested on **'Assetto Corsa'**, so it is not guaranteed that it will help on other sim racing games.\
+## Where can I watch how it works?
+[****Testing Video Here!****](https://youtu.be/_UKZzitJnb8?si=esQda0_WaPPVg00m)
 
-### Why was this created?
+## Why was this created?
 The project was born out of a technical limitation: existing emulation tools like FreePIE are restricted to x86 (32-bit) architectures, creating compatibility and stability issues with modern x64 (64-bit) vJoy drivers. This application is built natively in C# using WPF as a robust, 64-bit solution that interfaces directly with `vJoyInterface.dll`.
 
 ## How is it useful?
