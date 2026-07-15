@@ -26,11 +26,7 @@ To use this application, you must install the specific signed vJoy driver fork m
 While this software is continuously tested, bugs may still occur. If you encounter any unexpected behavior, crashes, or have suggestions for new features, please open an issue in the **Issues** tab or submit a report so I can look into it and push a fix!
 
 ## Where to start?
-<<<<<<< HEAD
-To start, you need to go to [Release](https://github.com/anatoliesir/mouse-and-keyboard-to-vjoy/releases/tag/v1.0.0), and then follow the instructions from there.
-=======
 To start, you need to go to [**Releases**](https://github.com/anatoliesir/mouse-and-keyboard-to-vjoy/releases) and install de latest version, following the instructions from there or from [**this**](https://youtu.be/npCY1FvN0tc?si=htcO5PdHre8QDc6W) tutorial.
->>>>>>> 8ebc13136ef08acb042aa6e0e151893884e17301
 
 ## Get the Author's Personal *Keyboard + Mouse* Settings
 If you want to start with a fully tested and optimized configuration for keyboard and mouse, follow these steps:
