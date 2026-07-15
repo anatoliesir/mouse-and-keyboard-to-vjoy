@@ -24,7 +24,7 @@ To use this application, you must install the specific signed vJoy driver fork m
 While this software is continuously tested, bugs may still occur. If you encounter any unexpected behavior, crashes, or have suggestions for new features, please open an issue in the **Issues** tab or submit a report so I can look into it and push a fix!
 
 ## Where to start?
-To start, you need to go to [Releases](https://github.com/anatoliesir/mouse-and-keyboard-to-vjoy/releases) and install de latest version, following the instructions from there.
+To start, you need to go to [Release](https://github.com/anatoliesir/mouse-and-keyboard-to-vjoy/releases/tag/v1.0.0), and then follow the instructions from there.
 
 ## Get the Author's Personal *Keyboard + Mouse* Settings
 If you want to start with a fully tested and optimized configuration for keyboard and mouse, follow these steps:
@@ -33,4 +33,4 @@ If you want to start with a fully tested and optimized configuration for keyboar
 2. Press `Win + R` on your keyboard, type `%appdata%` and hit Enter.
 3. Look for the `MouseToVJoy` folder.
 4. Paste the downloaded `presets.json` file inside that folder, overwriting the existing one.
-5. Restart the application and enjoy the optimized settings!
+5. Restart the application and enjoy the optimized curves!
