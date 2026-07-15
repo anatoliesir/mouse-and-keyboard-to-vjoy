@@ -71,11 +71,6 @@ namespace MouseToVJoy.Data
         public double KeyboardBrakeLimit { get; set; } = 1.0;
         public double KeyboardBrakeScrollSensitivity { get; set; } = 0.05;
         public double KeyboardBrakeScrollResetTime { get; set; } = 1.0;
-        public bool EnableKeyboardSteeringRateAssist { get; set; } = false;
-        public double KeyboardSteeringRateAssistMaxReduction { get; set; } = 0.50;
-        public bool EnableKeyboardSteeringRateAssistThrottle { get; set; } = true;
-        public bool EnableKeyboardSteeringRateAssistBrake { get; set; } = true;
-        public double KeyboardSteeringRateAssistBrakeDelaySeconds { get; set; } = 0.0;
 
         public static PresetSettings CreateDefault() => new();
     }
